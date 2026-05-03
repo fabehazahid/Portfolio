@@ -143,195 +143,255 @@ ul {
   transition: opacity 1s ease, transform 1s ease;
 }
 
-/* Layer 1: Sky */
+/* Layer 1: Soft Window Light & Room Ambience */
 .layer-sky {
-  background: radial-gradient(circle at 60% -10%, #E8F4FF 0%, #D1E9F6 30%, transparent 60%);
+  background: linear-gradient(180deg, #E8F2FF 0%, #F0E8FF 30%, #FFF5E6 100%);
   z-index: 1;
-  animation: skyDriftSubtle 8s ease-in-out infinite;
+  animation: ambientShift 12s ease-in-out infinite;
 }
 
-@keyframes skyDriftSubtle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+@keyframes ambientShift {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
 }
 
-/* Layer 2: Window Frame & Walls */
+/* Layer 2: Wooden Desk Surface with Books/Art Supplies */
 .layer-window {
   z-index: 2;
-  background-image: 
-    linear-gradient(90deg, var(--bg) 0%, transparent 12%, transparent 88%, var(--bg) 100%),
-    linear-gradient(180deg, var(--bg) 0%, transparent 25%, transparent 75%, var(--bg) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(139, 90, 43, 0.05) 50%, transparent 100%);
   position: relative;
 }
 
 .layer-window::before {
   content: '';
   position: absolute;
-  top: 20%;
+  bottom: 35%;
   left: 50%;
   transform: translateX(-50%);
-  width: 50%;
-  height: 55%;
-  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-  border: 14px solid #FAF8F3;
-  border-radius: 2px;
-  box-shadow: inset 0 0 60px rgba(100, 150, 200, 0.1), 0 8px 32px var(--shadow-medium);
+  width: 85%;
+  height: 40%;
+  background: linear-gradient(180deg, #8B6F47 0%, #6D5A38 50%, #5A4A28 100%);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 
+    inset 0 2px 12px rgba(255, 255, 255, 0.2),
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 0 80px rgba(200, 150, 100, 0.1);
 }
 
 .layer-window::after {
   content: '';
   position: absolute;
-  top: 20%;
+  bottom: 35%;
   left: 50%;
   transform: translateX(-50%);
-  width: 50%;
-  height: 55%;
-  background: linear-gradient(135deg, transparent 48%, rgba(200, 220, 240, 0.3) 50%, transparent 52%);
-  border: 14px solid transparent;
-  pointer-events: none;
+  width: 85%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(139, 111, 71, 0.3) 50%, transparent 100%);
 }
 
-/* Layer 3: The Desk */
+/* Layer 3: The Maker's Setup (Monitors, Tablet, Tools) */
 .layer-desk {
   z-index: 3;
   position: relative;
 }
 
+/* Left Monitor */
 .layer-desk::before {
   content: '';
   position: absolute;
-  bottom: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  height: 25%;
-  background: linear-gradient(180deg, #8B7355 0%, #6D5A48 100%);
-  border-radius: 2px 2px 8px 8px;
-  box-shadow: 0 12px 40px var(--shadow-medium), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+  bottom: 42%;
+  left: 22%;
+  width: 180px;
+  height: 140px;
+  background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+  border: 6px solid #3A3A3A;
+  border-radius: 2px;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.3),
+    inset 0 0 40px rgba(100, 150, 255, 0.15);
+  animation: monitorGlow 4s ease-in-out infinite;
 }
 
+@keyframes monitorGlow {
+  0%, 100% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 0 40px rgba(100, 150, 255, 0.15); }
+  50% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 0 50px rgba(100, 150, 255, 0.25); }
+}
+
+/* Right Monitor */
+.layer-desk::after {
+  content: '';
+  position: absolute;
+  bottom: 42%;
+  right: 22%;
+  width: 180px;
+  height: 140px;
+  background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+  border: 6px solid #3A3A3A;
+  border-radius: 2px;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.3),
+    inset 0 0 40px rgba(150, 100, 200, 0.15);
+  animation: monitorGlow2 4.5s ease-in-out infinite;
+}
+
+@keyframes monitorGlow2 {
+  0%, 100% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 0 40px rgba(150, 100, 200, 0.15); }
+  50% { box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 0 50px rgba(150, 100, 200, 0.25); }
+}
+
+/* Desk Items - Tablet/Sketchpad */
 .desk-item {
   position: absolute;
-  filter: drop-shadow(0 4px 12px var(--shadow-medium));
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.15));
 }
 
 .coffee-mug {
-  width: 45px;
-  height: 55px;
-  bottom: 24%;
-  right: 28%;
-  background: linear-gradient(90deg, #A67C52 0%, #8B6F47 100%);
-  border-radius: 3px 3px 12px 12px;
-  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.2), inset 2px 0 4px rgba(255, 255, 255, 0.1);
+  width: 50px;
+  height: 65px;
+  bottom: 36%;
+  left: 12%;
+  background: linear-gradient(90deg, #8B7355 0%, #A89968 100%);
+  border-radius: 2px 2px 8px 8px;
   position: relative;
-  z-index: 5;
+  z-index: 4;
+  box-shadow: 
+    inset 0 2px 6px rgba(255, 255, 255, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .mug-steam {
   position: absolute;
-  width: 24px;
-  height: 50px;
-  top: -55px;
-  left: 10px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
-  filter: blur(12px);
-  animation: steamRise 4s ease-in-out infinite;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  width: 28px;
+  height: 60px;
+  top: -70px;
+  left: 11px;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+  filter: blur(14px);
+  animation: steamRise 3.5s ease-in-out infinite;
+  border-radius: 50% 50% 50% 50% / 70% 60% 40% 40%;
 }
 
 @keyframes steamRise {
   0% { 
     opacity: 0.1; 
-    transform: translateY(0) scaleY(0.8) scaleX(0.6);
+    transform: translateY(0) scaleY(0.7) scaleX(0.5);
   }
-  25% {
+  30% {
     opacity: 0.4;
-    transform: translateY(-12px) scaleY(1) scaleX(0.8);
+    transform: translateY(-18px) scaleY(1) scaleX(0.8);
   }
-  50% { 
-    opacity: 0.6; 
-    transform: translateY(-24px) scaleY(1.1) scaleX(1);
-  }
-  75% {
-    opacity: 0.3;
-    transform: translateY(-32px) scaleY(1) scaleX(1.1);
+  60% { 
+    opacity: 0.5; 
+    transform: translateY(-35px) scaleY(1.2) scaleX(1);
   }
   100% { 
     opacity: 0; 
-    transform: translateY(-40px) scaleY(0.8) scaleX(1.2);
+    transform: translateY(-55px) scaleY(0.9) scaleX(1.3);
   }
 }
 
+/* Wacom/Graphics Tablet */
 .desk-lamp {
-  width: 8px;
-  height: 45px;
-  bottom: 24%;
-  left: 32%;
-  background: linear-gradient(90deg, #FFB74D 0%, #FF9800 100%);
+  width: 120px;
+  height: 70px;
+  bottom: 36.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border: 3px solid #D4A574;
   border-radius: 4px;
   position: relative;
   z-index: 4;
-  animation: lampGlow 3s ease-in-out infinite;
+  animation: tabletPulse 5s ease-in-out infinite;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 3px rgba(255, 255, 255, 0.3);
 }
 
 .desk-lamp::after {
   content: '';
   position: absolute;
-  top: -12px;
-  left: -8px;
-  width: 24px;
-  height: 16px;
-  background: radial-gradient(ellipse at center, #FFD699 0%, #FFB74D 100%);
-  border-radius: 50%;
-  filter: blur(6px);
+  inset: 8px;
+  border: 1px dashed rgba(100, 150, 200, 0.3);
+  border-radius: 2px;
+  background: linear-gradient(135deg, rgba(100, 150, 255, 0.1) 0%, rgba(150, 100, 200, 0.1) 100%);
+  animation: tabletGrid 8s linear infinite;
 }
 
-@keyframes lampGlow {
-  0%, 100% { box-shadow: 0 0 0 rgba(255, 183, 77, 0.2); }
-  50% { box-shadow: 0 0 15px rgba(255, 183, 77, 0.4); }
+@keyframes tabletPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.01); }
 }
 
+@keyframes tabletGrid {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Sketch Books/Art Supplies Stack */
 .plant-pot {
-  width: 35px;
-  height: 38px;
-  bottom: 23%;
-  right: 12%;
-  background: linear-gradient(90deg, #8B6F47 0%, #6D5A38 100%);
-  border-radius: 2px 2px 6px 6px;
+  width: 45px;
+  height: 80px;
+  bottom: 35%;
+  right: 15%;
+  background: linear-gradient(90deg, #7A6B5D 0%, #6B5C4D 100%);
+  border-radius: 2px;
   position: relative;
   z-index: 4;
-  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .plant-pot::before {
   content: '';
   position: absolute;
-  top: -20px;
-  left: 4px;
-  width: 27px;
-  height: 18px;
-  background: linear-gradient(180deg, #7CB342 0%, #558B2F 100%);
-  border-radius: 50% 50% 40% 40%;
-  filter: drop-shadow(0 2px 4px var(--shadow-soft));
-  animation: leafSway 4s ease-in-out infinite;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background: linear-gradient(90deg, #C4956B 0%, #A8793E 50%, #9B6F3D 100%);
+  margin-bottom: -2px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  animation: bookSway 4.5s ease-in-out infinite;
   transform-origin: bottom center;
 }
 
-@keyframes leafSway {
-  0%, 100% { transform: rotateZ(-2deg); }
-  50% { transform: rotateZ(2deg); }
+@keyframes bookSway {
+  0%, 100% { transform: rotateZ(-1deg); }
+  50% { transform: rotateZ(1deg); }
 }
 
+.plant-pot::after {
+  content: '';
+  position: absolute;
+  bottom: 125%;
+  left: 0;
+  width: 100%;
+  height: 22px;
+  background: linear-gradient(90deg, #D4956B 0%, #B8793E 50%, #AA6F3D 100%);
+  margin-bottom: -3px;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  animation: bookSway2 4.7s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes bookSway2 {
+  0%, 100% { transform: rotateZ(0.5deg); }
+  50% { transform: rotateZ(-0.5deg); }
+}
+
+/* 3D Models on Shelf */
 .bookshelf {
-  width: 40px;
-  height: 50px;
-  bottom: 23%;
-  left: 15%;
-  background: linear-gradient(90deg, #6D5A48 0%, #5A4A38 100%);
+  width: 60px;
+  height: 90px;
+  bottom: 35%;
+  right: 8%;
+  background: linear-gradient(180deg, #6D5A48 0%, #5A4A38 100%);
   position: relative;
   z-index: 3;
   border-radius: 2px;
-  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .bookshelf::before,
@@ -339,21 +399,26 @@ ul {
   content: '';
   position: absolute;
   width: 100%;
-  height: 6px;
-  background: linear-gradient(90deg, #5A4A38 0%, #4A3A28 100%);
+  height: 4px;
+  background: linear-gradient(90deg, #4A3A28 0%, #5A4A38 100%);
   left: 0;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .bookshelf::before {
-  top: 15px;
-  box-shadow: 0 18px 0 rgba(0, 0, 0, 0.2), 0 36px 0 rgba(0, 0, 0, 0.15);
+  top: 20px;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    0 22px 0 rgba(0, 0, 0, 0.1),
+    0 45px 0 rgba(0, 0, 0, 0.08),
+    0 68px 0 rgba(0, 0, 0, 0.08);
 }
 
 .bookshelf::after {
-  bottom: 8px;
+  bottom: 6px;
 }
 
-/* Layer 4: Props & Floating Elements */
+/* Layer 4: Props & Creative Elements */
 .layer-props {
   z-index: 4;
   position: relative;
@@ -361,26 +426,27 @@ ul {
 
 .prop-note {
   position: absolute;
-  width: 60px;
-  height: 48px;
-  top: 35%;
-  right: 20%;
-  background: linear-gradient(135deg, #FFF9E6 0%, #FFFAEB 100%);
-  border-radius: 1px;
-  box-shadow: 0 8px 16px var(--shadow-medium);
-  transform: rotate(-3deg);
-  animation: noteFloat 5s ease-in-out infinite;
+  width: 55px;
+  height: 70px;
+  top: 28%;
+  left: 8%;
+  background: linear-gradient(135deg, #FEF5E7 0%, #F5E6D3 100%);
+  border: 2px solid #D4A574;
+  border-radius: 2px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transform: rotate(-8deg);
+  animation: noteFlutter 5s ease-in-out infinite;
 }
 
 .prop-note::before {
   content: '';
   position: absolute;
   width: 100%;
-  height: 3px;
-  top: 15px;
+  height: 2px;
+  top: 18px;
   left: 0;
-  background: #F0E68C;
-  opacity: 0.6;
+  background: #FFB74D;
+  opacity: 0.5;
 }
 
 .prop-note::after {
@@ -388,51 +454,84 @@ ul {
   position: absolute;
   width: 80%;
   height: 2px;
-  top: 25px;
+  top: 28px;
   left: 10%;
-  background: #FFB74D;
+  background: #8B6F47;
   opacity: 0.4;
-  box-shadow: 0 6px 0 rgba(255, 183, 77, 0.2), 0 12px 0 rgba(255, 183, 77, 0.15);
+  box-shadow: 0 8px 0 rgba(139, 111, 71, 0.25), 0 16px 0 rgba(139, 111, 71, 0.15);
 }
 
-@keyframes noteFloat {
-  0%, 100% { transform: translateY(0) rotate(-3deg); }
-  50% { transform: translateY(-6px) rotate(-1deg); }
+@keyframes noteFlutter {
+  0%, 100% { transform: rotate(-8deg) translateY(0); }
+  50% { transform: rotate(-5deg) translateY(-4px); }
 }
 
 .prop-sketch {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
   top: 50%;
-  left: 18%;
-  background: linear-gradient(45deg, #FAF8F3 0%, #F5F3ED 100%);
-  border: 2px solid #D4A574;
+  right: 6%;
+  background: linear-gradient(45deg, #F9E4B7 0%, #F0D4A0 100%);
+  border: 2px solid #D4956B;
   border-radius: 2px;
-  box-shadow: 0 6px 16px var(--shadow-medium);
-  transform: rotate(2deg);
-  animation: sketchPulse 4s ease-in-out infinite;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  transform: rotate(3deg);
+  animation: sketchWobble 5.5s ease-in-out infinite;
 }
 
 .prop-sketch::before {
   content: '';
   position: absolute;
-  inset: 6px;
+  inset: 8px;
   border-left: 2px solid #8B6F47;
   border-top: 2px solid #A89968;
+  border-radius: 1px;
+  background: 
+    linear-gradient(45deg, transparent 40%, rgba(100, 150, 255, 0.1) 45%, transparent 50%),
+    linear-gradient(-45deg, transparent 40%, rgba(150, 100, 200, 0.1) 45%, transparent 50%);
 }
 
-@keyframes sketchPulse {
-  0%, 100% { transform: rotate(2deg) scale(1); }
+.prop-sketch::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, rgba(100, 150, 255, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: pulseCore 3s ease-in-out infinite;
+}
+
+@keyframes sketchWobble {
+  0%, 100% { transform: rotate(3deg) scale(1); }
   50% { transform: rotate(1deg) scale(1.02); }
 }
 
-/* Vignette for depth */
+@keyframes pulseCore {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+/* Pen/Pencil holder animation */
+.prop-note + * {
+  animation: itemFloat 4s ease-in-out infinite;
+}
+
+@keyframes itemFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(1deg); }
+  75% { transform: translateY(-2px) rotate(-1deg); }
+}
+
+/* Vignette for atmospheric depth */
 .studio-vignette {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(circle at center, transparent 0%, transparent 70%, rgba(0, 0, 0, 0.04) 100%);
+    radial-gradient(circle at center, transparent 0%, transparent 65%, rgba(0, 0, 0, 0.06) 100%);
   z-index: 5;
   pointer-events: none;
 }
@@ -615,7 +714,7 @@ ul {
   transition: opacity 0.6s ease;
 }
 
-/* ═══════════════════════════════════════════
+/* ═════════════════════════���═════════════════
    SECTION 2: AWAKENING
    ═══════════════════════════════════════════ */
 #awakening {
