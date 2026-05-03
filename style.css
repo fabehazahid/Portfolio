@@ -1,0 +1,777 @@
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+   ═══════════════════════════════════════════ */
+:root {
+  --bg: #F9F7F2; /* Creamier background */
+  --surface: #F2EFE9;
+  --text: #2D2D2A;
+  --muted: #6B6862;
+  
+  /* Ghibli Studio Palette */
+  --wood-warm: #6D4C41;
+  --sky-pale: #D1E9F6;
+  --leaf-sage: #94A684;
+  --lamp-orange: #FFB74D;
+  
+  --accent: #5D4037;
+  --accent-light: #A3B18A;
+
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --space-2xl: 12rem;
+
+  --max-width: 900px; /* More focused reading width */
+  --transition-journey: 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ═══════════════════════════════════════════
+   TEXTURE GHOSTING (Rich Paper Feel)
+   ═══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Secondary layer for fiber texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fiberFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.01' numOctaves='5'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='20'/%3E%3C/filter%3E%3C/svg%3E");
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-calm);
+}
+
+a:hover {
+  color: var(--text);
+}
+
+ul {
+  list-style: none;
+}
+
+/* ═══════════════════════════════════════════
+   SHARED SECTION STYLES
+   ═══════════════════════════════════════════ */
+.section-heading {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--text);
+  margin-bottom: var(--space-xs);
+  letter-spacing: -0.01em;
+}
+
+.section-subtext {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: var(--space-lg);
+  font-weight: 300;
+}
+
+/* Reveal animation base */
+[data-reveal],
+.projects-group,
+.project-tile,
+.secondary-tile,
+.creative-tile,
+.journal-entry,
+.about-inner,
+#journal > .section-heading,
+#journal > .section-subtext {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 1: HERO
+   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   THE STUDIO BACKDROP (The Reveal)
+   ═══════════════════════════════════════════ */
+.studio-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--bg);
+  transition: background 1.5s ease;
+}
+
+.studio-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0; /* Hidden by default, mapped to scroll in JS */
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+/* Layer 1: Sky */
+.layer-sky {
+  background: radial-gradient(circle at 100% 0%, var(--sky-pale) 0%, transparent 60%);
+  z-index: 1;
+}
+
+/* Layer 2: Window Frame & Walls */
+.layer-window {
+  z-index: 2;
+  background-image: 
+    linear-gradient(90deg, var(--bg) 0%, transparent 15%, transparent 85%, var(--bg) 100%),
+    linear-gradient(0deg, var(--bg) 0%, transparent 20%);
+}
+
+.layer-window::after {
+  content: '';
+  position: absolute;
+  top: 15%;
+  right: 15%;
+  width: 40%;
+  height: 50%;
+  border: 12px solid #FFF; /* Window frame */
+  box-shadow: 0 0 40px rgba(255,255,255,0.2);
+}
+
+/* Layer 3: The Desk */
+.layer-desk {
+  z-index: 3;
+}
+
+.desk-item {
+  position: absolute;
+  background: var(--accent);
+  opacity: 0.1;
+  filter: blur(2px);
+}
+
+.coffee-mug {
+  width: 50px;
+  height: 60px;
+  bottom: 25%;
+  right: 25%;
+  background: #A67C52;
+  border-radius: 4px 4px 10px 10px;
+}
+
+.mug-steam {
+  width: 20px;
+  height: 40px;
+  top: -45px;
+  left: 15px;
+  background: radial-gradient(circle, #FFF 0%, transparent 70%);
+  filter: blur(8px);
+  animation: steamRise 3s ease-in-out infinite;
+}
+
+@keyframes steamRise {
+  0%, 100% { opacity: 0.2; transform: translateY(0) scale(1); }
+  50% { opacity: 0.5; transform: translateY(-10px) scale(1.2); }
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 1: JOURNEY HERO
+   ═══════════════════════════════════════════ */
+.journey-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-lg);
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-name {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 10vw, 6.5rem); /* Confident sizing */
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.04em;
+  margin-bottom: var(--space-sm);
+  font-variation-settings: "opsz" 100;
+}
+
+.hero-tagline {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.indicator-arrow {
+  width: 24px;
+  height: 24px;
+  animation: arrowGlow 2s ease-in-out infinite;
+}
+
+@keyframes arrowGlow {
+  0%, 100% { opacity: 0.4; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(5px); }
+}
+
+/* ═══════════════════════════════════════════
+   JOURNEY SECTIONS
+   ═══════════════════════════════════════════ */
+.journey-section {
+  min-height: 100vh;
+  padding: var(--space-2xl) var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+.studio-hub {
+  display: flex;
+  align-items: center;
+}
+
+.about-card {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  padding: var(--space-lg);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+}
+
+.about-skill-shelf {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.shelf-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+/* Updated Projects for Journey */
+.project-tile {
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: var(--space-md);
+  transition: var(--transition-journey);
+  cursor: default;
+}
+
+.project-tile:hover {
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateY(-5px);
+}
+
+.tile-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent-light);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+.tile-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  margin-bottom: var(--space-sm);
+}
+
+.tile-reveal {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.tile-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--space-sm);
+}
+
+.tile-stack li {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background: var(--bg);
+  border-radius: 2px;
+}
+
+.scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.8rem;
+  color: var(--accent-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.scroll-hint svg {
+  animation: hintBounce 2s ease-in-out infinite;
+}
+
+@keyframes hintBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* Hide scroll hint once user scrolls */
+.scrolled .scroll-hint {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 2: AWAKENING
+   ═══════════════════════════════════════════ */
+#awakening {
+  padding: var(--space-2xl) var(--space-lg);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.awakening-text {
+  max-width: 600px;
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-weight: 400;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.7;
+  font-style: italic;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.awakening-text.revealed {
+  opacity: 1;
+}
+
+/* Subtle background tone shift */
+#awakening::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--surface);
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: -1;
+}
+
+#awakening.tone-shift::before {
+  opacity: 0.4;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 3: PROJECTS
+   ═══════════════════════════════════════════ */
+#projects {
+  padding: var(--space-xl) var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.projects-group {
+  margin-bottom: var(--space-2xl);
+}
+
+/* ── Featured Grid ── */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+.project-tile {
+  background: var(--surface);
+  padding: var(--space-md);
+  border-radius: 6px;
+  position: relative;
+  cursor: default;
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow),
+    background-color var(--transition-calm);
+}
+
+.project-tile:hover {
+  background-color: #DED9CB;
+}
+
+.tile-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: var(--space-xs);
+}
+
+.tile-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--space-sm);
+  line-height: 1.35;
+}
+
+.tile-reveal {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height var(--transition-calm),
+    opacity 0.4s ease 0.1s;
+}
+
+.project-tile:hover .tile-reveal,
+.creative-tile:hover .tile-reveal {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.tile-insight {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: var(--space-xs);
+  line-height: 1.6;
+}
+
+.tile-highlight {
+  font-size: 0.82rem;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+  line-height: 1.5;
+}
+
+.tile-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Category Specific Coloring */
+.project-tile[data-category="ai"] .tile-tag { color: var(--accent-ai); }
+.project-tile[data-category="systems"] .tile-tag { color: var(--accent-systems); }
+.project-tile[data-category="blender"] .tile-tag { color: var(--accent-creative); }
+.project-tile[data-category="writing"] .tile-tag { color: var(--accent-writing); }
+
+.project-tile[data-category="ai"]:hover { border-bottom: 2px solid var(--accent-ai); }
+.project-tile[data-category="systems"]:hover { border-bottom: 2px solid var(--accent-systems); }
+.project-tile[data-category="blender"]:hover { border-bottom: 2px solid var(--accent-creative); }
+
+.tile-stack li {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: var(--bg);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── Secondary List ── */
+.secondary-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.secondary-tile {
+  background: var(--surface);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 6px;
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow),
+    background-color var(--transition-calm);
+}
+
+.secondary-tile:hover {
+  background-color: #DED9CB;
+}
+
+.secondary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-xs);
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.secondary-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.secondary-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: var(--space-xs);
+  line-height: 1.6;
+}
+
+/* ── Creative Grid ── */
+.creative-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+.creative-tile {
+  background: var(--surface);
+  padding: var(--space-md);
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-light);
+  cursor: default;
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow),
+    background-color var(--transition-calm);
+}
+
+.creative-tile:hover {
+  background-color: #DED9CB;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 4: JOURNAL
+   ═══════════════════════════════════════════ */
+#journal {
+  padding: var(--space-xl) var(--space-lg);
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+.journal-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.journal-entry {
+  cursor: pointer;
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--surface);
+  transition:
+    opacity var(--transition-slow),
+    transform var(--transition-slow);
+}
+
+.journal-date {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-light);
+  margin-bottom: var(--space-xs);
+}
+
+.journal-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--space-xs);
+  line-height: 1.4;
+}
+
+.journal-excerpt {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.4s ease 0.15s;
+}
+
+.journal-entry.expanded .journal-excerpt {
+  max-height: 400px;
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 5: ABOUT
+   ═══════════════════════════════════════════ */
+#about {
+  padding: var(--space-xl) var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.about-inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: var(--space-sm);
+  line-height: 1.75;
+}
+
+.about-tags-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag-cloud li {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 100px;
+  background: var(--surface);
+  color: var(--muted);
+  transition: color var(--transition-calm), background-color var(--transition-calm);
+}
+
+.tag-cloud li:hover {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 6: FOOTER
+   ═══════════════════════════════════════════ */
+#footer {
+  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  text-align: center;
+}
+
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--surface);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.footer-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  transition: color var(--transition-calm);
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+.footer-closing {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  color: var(--accent-light);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  #hero {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .about-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .project-grid,
+  .creative-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .secondary-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --space-lg: 2.5rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+  }
+
+  .hero-name {
+    font-size: 2rem;
+  }
+}
